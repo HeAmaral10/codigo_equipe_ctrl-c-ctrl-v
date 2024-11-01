@@ -1,0 +1,25 @@
+{
+  "name": "ctrl-c---ctrl-v",
+  "version": "1.0.0",
+  "description": "Projeto Prático Veturus. Criação do backend de uma rede social utilizando Node.js para integração de banco de dados com site.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeAmaral10/CTRL-C---CTRL-V.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HeAmaral10/CTRL-C---CTRL-V/issues"
+  },
+  "homepage": "https://github.com/HeAmaral10/CTRL-C---CTRL-V#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "sequelize": "^6.37.5"
+  }
+}
