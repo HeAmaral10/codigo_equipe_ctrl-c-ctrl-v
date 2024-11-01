@@ -48,7 +48,7 @@ router.get("/publicacoes", async (req, res) => {
             nick: publicacao.Usuario.nick,
             imagem : publicacao.Usuario.imagem,
             qtd_likes: publicacao.qtd_likes,
-            criado_em: publicacao.createdAt.toISOString(),
+            criado_em: publicacao.criado_em,
         }));
 
         return res.status(200).json({
