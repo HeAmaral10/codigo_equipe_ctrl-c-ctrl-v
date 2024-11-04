@@ -82,15 +82,11 @@ router.get("/publicacoes/de/:usuario_id", async (req, res) => {
                 'nick',
                 'imagem',
                 'criado_em',
-                [sequelize.fn('COUNT', sequelize.col('Likes.publicacao_id')), 'qtd_likes'],
+                'qtd_likes',
                 [sequelize.fn('COUNT', sequelize.col('Comentarios.publicacao_id')), 'qtd_comentarios'],
 
             ],
             include: [
-                {
-                    model: Like,
-                    atributes: []
-                },
                 {
                     model: Comentario,
                     atributes: []
@@ -126,17 +122,13 @@ router.get("/publicacoes/:publicacao_id", async (req, res) => {
                 'usuario_id',
                 'nick',
                 'imagem',
-                'criado_em',
-                [sequelize.fn('COUNT', sequelize.col('Likes.publicacao_id')), 'qtd_likes'],
+                'qtd_likes',
+                'criado_em'
             ],
             include: [
                 {
                     model: Usuario,
-                    atributes: ['nick']
-                },
-                {
-                    model: Like,
-                    atrbiutes: []
+                    atributes: ['nick', 'imagem']
                 },
                 {
                     model: Comentario,
@@ -146,14 +138,9 @@ router.get("/publicacoes/:publicacao_id", async (req, res) => {
                         'usuario_id',
                         'nick',
                         'imagem',
-                        'criado_em'
+                        'qtd_likes',
+                        'criado_em'                        
                     ],
-                    include: [
-                        {
-                            model: Like,
-                            atributes: [[sequelize.fn('COUNT', sequelize.col('Likes.comentario_id')), 'qtd_likes']]
-                        }
-                    ] 
                 }
             ],
             group: ['Publicacao.publicacao_id', "Comentarios.comentario_id"]

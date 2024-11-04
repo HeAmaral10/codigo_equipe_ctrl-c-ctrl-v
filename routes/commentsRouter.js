@@ -35,6 +35,28 @@ router.post("/comentarios", async (req, res) => {
 
 });
 
+router.get("/comentarios", async (req, res) => {
+
+    const { publicacao_id } = req.query;
+
+    try {
+        
+        if (!publicacao_id) {
+            return res.status(400).json({ erro: "Publicação não informada" });
+        }
+
+        const comentariosFiltrados = comentarios.filter(comentario => comentario.publicacao_id === publicacao_id);
+
+        res.status(200).json({
+            data: comentariosFiltrados,
+            total: comentariosFiltrados.lenght
+        });
+        
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao buscar comentários" });
+    }
+});
+
 router.delete("/comentarios", async (req, res) => {
 
     const { comentario_id, usuario_id } = req.body;
