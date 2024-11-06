@@ -83,7 +83,10 @@ router.delete("/comentarios", async (req, res) => {
         
         return res.status(204).json({});
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao deletar o comentário" });
+
+    }
     
 });
 

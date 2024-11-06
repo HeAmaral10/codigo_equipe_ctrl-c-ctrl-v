@@ -23,7 +23,9 @@ router.post("/curtidas/publicacao", async (req, res) => {
 
         return res.status(200).json({ qtd_likes: publicacaoAtualizada.qtd_likes });
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao adicionar a curtida" });
+    }
 
 });
 
@@ -49,7 +51,10 @@ router.delete("/curtidas/publicacao", async (req, res) => {
 
         return res.status(200).json({ qtd_likes: publicacaoAtualizada.qtd_likes });
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao retirar a curtida" });
+
+    }
     
 });
 
@@ -73,7 +78,10 @@ router.post("/curtidas/comentario", async (req, res) => {
 
         return res.status(200).json({ qtd_likes: comentarioAtualizado.qtd_likes });
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao adicionar a curtida" });
+
+    }
 
 });
 
@@ -99,5 +107,8 @@ router.delete("/curtidas/comentario", async (req, res) => {
 
         return res.status(200).json({ qtd_likes: comentarioAtualizado.qtd_likes });
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao retirar a curtida" });
+
+    }
 });

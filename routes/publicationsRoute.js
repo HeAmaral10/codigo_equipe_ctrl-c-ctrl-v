@@ -99,7 +99,9 @@ router.get("/publicacoes/de/:usuario_id", async (req, res) => {
             total: publicacoes.lenght
         });
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao listar" });
+    }
 
 });
 
@@ -147,7 +149,9 @@ router.get("/publicacoes/:publicacao_id", async (req, res) => {
         
         return res.status(200).json(publicacao);
 
-    } catch (erro) {}
+    } catch (erro) {
+        return res.status(500).json({ erro: "Erro ao listar" });
+    }
 
 });
 
@@ -172,7 +176,9 @@ router.delete("/publicacoes", async (req, res) => {
 
         return res.status(200).json({ mensagem: "Publicação deletado com sucesso" });
 
-    } catch (error) {}
+    } catch (error) {
+        return res.status(500).json({ erro: "Erro ao deletar a publicação" });
+    }
 
 });
 
