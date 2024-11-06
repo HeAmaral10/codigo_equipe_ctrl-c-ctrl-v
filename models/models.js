@@ -27,6 +27,7 @@ const Publicacao = sequelize.define("Publicação", {
     publicacao: { type: DataTypes.STRING, allowNull: false },
     qtd_likes: { type: DataTypes.INTEGER, allowNull: false },
     criado_em: { type: DataTypes.DATE, allowNull: false },
+    qtd_comentarios: { type: DataTypes.INTEGER, allowNull: false },
 });
 
 const Comentario = sequelize.define("Comentário", {

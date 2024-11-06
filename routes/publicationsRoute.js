@@ -83,8 +83,7 @@ router.get("/publicacoes/de/:usuario_id", async (req, res) => {
                 'imagem',
                 'criado_em',
                 'qtd_likes',
-                [sequelize.fn('COUNT', sequelize.col('Comentarios.publicacao_id')), 'qtd_comentarios'],
-
+                'qtd_comentarios'
             ],
             include: [
                 {

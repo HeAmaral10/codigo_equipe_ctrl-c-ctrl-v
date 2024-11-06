@@ -1,8 +1,8 @@
 import express from "express";
 import sequelize from "./config/database.js";
-import publicationsRouter from "./routes/publicationsRouter.js";
-import commentsRouter from "./routes/commentsRouter.js";
-import likesRouter from "./routes/likesRouter.js";
+import publicationsRoute from "./routes/publicationsRoute.js";
+import commentsRoute from "./routes/commentsRoute.js";
+import likesRoute from "./routes/likesRoute.js";
 
 const app = express();
 
@@ -11,9 +11,9 @@ app.use(express.json());
 
 // Usando as rotas de produtos
 // localhost:3000/api/products
-app.use("/app", publicationsRouter);
-app.use("/app", commentsRouter);
-app.use("/app", likesRouter);
+app.use("/app", publicationsRoute);
+app.use("/app", commentsRoute);
+app.use("/app", likesRoute);
 
 // Sincronizar o banco de dados e iniciar o servidor
 const startServer = async () => {

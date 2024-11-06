@@ -1,5 +1,5 @@
 import express from "express";
-import { Publicacao, sequelize, Usuario, Comentario } from "./modelos.js";
+import { Publicacao, sequelize, Usuario, Comentario } from "../models/models.js";
 
 const router = express.Router();
 
@@ -26,6 +26,8 @@ router.post("/comentarios", async (req, res) => {
             publicacao_id,
             usuario_id,
         });
+
+        await publicacaoExiste.increment('qtd_comentarios');
 
         return res.status(201).json(novoComentario);
 
@@ -77,6 +79,8 @@ router.delete("/comentarios", async (req, res) => {
 
         await comentario.destroy();
 
+        await publicacaoExiste.decrement('qtd_comentarios');
+        
         return res.status(204).json({});
 
     } catch (error) {}
