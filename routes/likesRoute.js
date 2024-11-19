@@ -1,5 +1,6 @@
 import express from "express";
-import { Publicacao, sequelize, Comentario } from "./modelos.js";
+import { Publicacao } from "../models/Publicacoes";
+import { Comentario } from "../models/Comentarios";
 
 const router = express.Router();
 
