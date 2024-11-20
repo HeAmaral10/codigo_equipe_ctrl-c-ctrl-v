@@ -6,6 +6,7 @@ const sequelize = new Sequelize({
     storage: "./banco.db"
 });
 
+// Função para fazer o teste de conexão com o banco de dados
 const testConnection = async () => {
     try {
         await sequelize.authenticate();

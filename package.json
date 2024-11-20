@@ -1,25 +1,27 @@
 {
-  "name": "ctrl-c---ctrl-v",
+  "name": "codigo_equipe_ctrl-c-ctrl-v",
   "version": "1.0.0",
-  "description": "Projeto Prático Veturus. Criação do backend de uma rede social utilizando Node.js para integração de banco de dados com site.",
+  "description": "Projeto Venturus",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HeAmaral10/CTRL-C---CTRL-V.git"
+    "url": "git+https://github.com/HeAmaral10/codigo_equipe_ctrl-c-ctrl-v.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Caroline Rocha Rodrigues, Francisco Castilho Goulart, Henrique Professor de Amaral",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HeAmaral10/CTRL-C---CTRL-V/issues"
+    "url": "https://github.com/HeAmaral10/codigo_equipe_ctrl-c-ctrl-v/issues"
   },
-  "homepage": "https://github.com/HeAmaral10/CTRL-C---CTRL-V#readme",
+  "homepage": "https://github.com/HeAmaral10/codigo_equipe_ctrl-c-ctrl-v#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.1",
     "nodemon": "^3.1.7",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
   }
 }
