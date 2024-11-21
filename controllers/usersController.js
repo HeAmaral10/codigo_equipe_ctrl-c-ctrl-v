@@ -6,11 +6,11 @@ const MIN_AGE = 16;
 
 // Função para criar um novo usuário
 export const createUsuario = async (req, res) => {
-    const { nome, email, senha, nascimento, nick } = req.body;
+    const { nome, email, senha, nascimento, nick, imagem } = req.body;
 
     try {
         // Verifica se todos os campos obrigatórios estão presentes
-        if (!nome || !email || !senha || !nascimento || !nick) {
+        if (!nome || !email || !senha || !nascimento || !nick || !imagem) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
 

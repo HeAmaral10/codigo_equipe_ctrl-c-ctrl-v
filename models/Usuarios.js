@@ -33,7 +33,7 @@ Usuario.init(
     },
     imagem: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {

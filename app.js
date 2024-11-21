@@ -1,9 +1,9 @@
 import express from "express";
 import sequelize from "./config/database.js";
-import publicationsRoute from "./routes/publicationsRoute.js";
-import commentsRoute from "./routes/commentsRoute.js";
-import likesRoute from "./routes/likesRoute.js";
-import userRoute from "./routes/userRoute.js";
+import comentarios from "./routes/comentarios.js";
+import publicacoes from "./routes/publicacoes.js";
+import curtidas from "./routes/curtidas.js";
+import usuarios from "./routes/usuarios.js";
 
 const app = express();
 
@@ -11,10 +11,10 @@ const app = express();
 app.use(express.json());
 
 // Usando as rotas de publicações, comentários e curtidas
-app.use("/app", publicationsRoute);
-app.use("/app", commentsRoute);
-app.use("/app", likesRoute);
-app.use("/app", userRoute);
+app.use("/app", publicacoes);
+app.use("/app", comentarios);
+app.use("/app", curtidas);
+app.use("/app", usuarios);
 
 // Sincronizar o banco de dados e iniciar o servidor
 const startServer = async () => {

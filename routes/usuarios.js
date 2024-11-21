@@ -5,7 +5,7 @@ import {
   listUsuarios,
   detailUsuario,
   updateUsuarios,
-} from "../controllers/userController.js"; // Importa de outro arquivo
+} from "../controllers/usersController.js"; // Importa de outro arquivo
 
 const router = express.Router(); //pacote de desenvolvimento web- conecta frontend e backend
 
@@ -16,9 +16,9 @@ router.post("/usuarios", createUsuario); // Cria um recurso/produto por uma soli
 router.get("/usuarios", listUsuarios); // Pega a informação
 
 // Rota para detalhar um usuario
-router.get("/usuarios/:id", detailUsuario);// pega o ID do usuario a ser detalhado 
+router.get("/usuarios/:usuario_id", detailUsuario);// pega o ID do usuario a ser detalhado 
 
 //rota para atualizar um usuario
-router.patch("/usuarios/:id", updateUsuarios); // Patch atualiza se existe, caso contrário não atualiza
+router.patch("/usuarios/:usuario_id", updateUsuarios); // Patch atualiza se existe, caso contrário não atualiza
 
 export default router; // Exportar o arquivo (não precisa usar chave para especificar o valor exportado)

@@ -26,7 +26,9 @@ export const createPublicacao = async (req, res) => {
         });
 
         // Retorna a publicação criada
-        return res.status(201).json(novaPublicacao);
+        return res.status(201).json({
+            id: novaPublicacao.id,
+    });
 
     } catch (error) {
         // Trata erros na criação da publicação
@@ -35,32 +37,40 @@ export const createPublicacao = async (req, res) => {
 
 };
 
-export const listAllPublicacao = async (res) => {
+export const listAllPublicacao = async (req, res) => {
 
     try {
+
+        let where = {};
+        
         const publicacoes = await Publicacao.findAll({
-            include: [{
-                model: Usuario,
-                attributes: ['usuario_id', 'nick', 'imagem'],
-            }],
+            where,
         });
 
         // Formata os dados das publicações
-        const data = publicacoes.map(publicacao => ({
-            publicacao_id: publicacao.publicacao_id,
-            publicacao: publicacao.publicacao,
-            usuario_id: publicacao.usuario_id,
-            nick: publicacao.Usuario.nick,
-            imagem: publicacao.Usuario.imagem,
-            qtd_likes: publicacao.qtd_likes,
-            criado_em: publicacao.criado_em,
-        }));
+        // const data = publicacoes.map(publicacao => ({
+        //     publicacao_id: publicacao.publicacao_id,
+        //     publicacao: publicacao.publicacao,
+        //     usuario_id: publicacao.usuario_id,
+        //     nick: publicacao..nick,
+        //     imagem: publicacao.Usuario.imagem,
+        //     qtd_likes: publicacao.qtd_likes,
+        //     criado_em: publicacao.criado_em,
+        // }));
 
         // Retorna as publicações e o total
-        return res.status(200).json({
-            data,
-            total: data.length,
-        });
+        return res.status(200).json(
+            publicacoes.map(publicacao => ({
+                id: publicacao.id,
+                publicacao: publicacao.publicacao,
+                usuario_id: publicacao.usuario_id,
+                nick: publicacao.nick,
+                imagem: publicacao.imagem,
+                qtd_likes: publicacao.qtd_likes,
+                criado_em: publicacao.criado_em
+            //total: data.length,
+        }))
+        );
 
     } catch (error) {
         // Trata erros na listagem das publicações
@@ -91,17 +101,11 @@ export const listAllUsuario = async (req, res) => {
                 'qtd_likes',
                 'qtd_comentarios'
             ],
-            include: [
-                {
-                    model: Comentario,
-                    attributes: []
-                }
-            ],
         });
 
         // Retorna as publicações e o total
         return res.status(200).json({
-            data: publicacoes,
+            data:  publicacoes,
             total: publicacoes.length
         });
 
@@ -195,4 +199,4 @@ export const deletePublicacao = async (req, res) => {
         return res.status(500).json({ erro: "Erro ao deletar a publicação" });
     }
 
-}
+};

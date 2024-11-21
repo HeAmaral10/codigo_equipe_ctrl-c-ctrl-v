@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
 const sequelize = new Sequelize({
     host: "localhost",
