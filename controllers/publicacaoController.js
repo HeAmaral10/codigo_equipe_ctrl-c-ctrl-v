@@ -28,7 +28,7 @@ export const createPublicacao = async (req, res) => {
         // Retorna a publicação criada
         return res.status(201).json({
             id: novaPublicacao.id,
-    });
+        });
 
     } catch (error) {
         // Trata erros na criação da publicação
@@ -41,36 +41,23 @@ export const listAllPublicacao = async (req, res) => {
 
     try {
 
-        let where = {};
-        
-        const publicacoes = await Publicacao.findAll({
-            where,
-        });
+        const publicacoes = await Publicacao.findAll({});
 
-        // Formata os dados das publicações
-        // const data = publicacoes.map(publicacao => ({
-        //     publicacao_id: publicacao.publicacao_id,
-        //     publicacao: publicacao.publicacao,
-        //     usuario_id: publicacao.usuario_id,
-        //     nick: publicacao..nick,
-        //     imagem: publicacao.Usuario.imagem,
-        //     qtd_likes: publicacao.qtd_likes,
-        //     criado_em: publicacao.criado_em,
-        // }));
+        publicacoes.map(publicacao => ({
+            id: publicacao.id,
+            publicacao: publicacao.publicacao,
+            usuario_id: publicacao.usuario_id,
+            nick: publicacao.nick,
+            imagem: publicacao.imagem,
+            qtd_likes: publicacao.qtd_likes,
+            criado_em: publicacao.criado_em,
+        }));
 
         // Retorna as publicações e o total
-        return res.status(200).json(
-            publicacoes.map(publicacao => ({
-                id: publicacao.id,
-                publicacao: publicacao.publicacao,
-                usuario_id: publicacao.usuario_id,
-                nick: publicacao.nick,
-                imagem: publicacao.imagem,
-                qtd_likes: publicacao.qtd_likes,
-                criado_em: publicacao.criado_em
-            //total: data.length,
-        }))
-        );
+        return res.status(200).json({
+            data: publicacoes,
+            total: data.length,
+        });
 
     } catch (error) {
         // Trata erros na listagem das publicações
@@ -85,6 +72,7 @@ export const listAllUsuario = async (req, res) => {
     const usuarioExiste = await Usuario.findByPk(usuario_id);
 
     try {
+
         // Verifica se o usuário existe
         if (!usuarioExiste) {
             return res.status(404).json({ erro: "Usuário não encontrado" });
@@ -99,7 +87,8 @@ export const listAllUsuario = async (req, res) => {
                 'usuario_id',
                 'criado_em',
                 'qtd_likes',
-                'qtd_comentarios'
+                'qtd_comentarios',
+                'criado_em'
             ],
         });
 
@@ -109,10 +98,7 @@ export const listAllUsuario = async (req, res) => {
             total: publicacoes.length
         });
 
-    } catch (error) {
-        // Trata erros na listagem das publicações do usuário
-        return res.status(500).json({ erro: "Erro ao listar" });
-    }
+    } catch (error) {}
     
 };
 
@@ -123,6 +109,7 @@ export const listOnePublicacao = async (req, res) => {
     const publicacaoExiste = await Publicacao.findByPk(publicacao_id);
 
     try {
+
         // Verifica se a publicação existe
         if (!publicacaoExiste) {
             return res.status(404).json({ erro: "Publicação não encontrada" });
@@ -159,10 +146,7 @@ export const listOnePublicacao = async (req, res) => {
         // Retorna a publicação e seus detalhes
         return res.status(200).json(publicacao);
 
-    } catch (erro) {
-        // Trata erros ao buscar a publicação
-        return res.status(500).json({ erro: "Erro ao listar" });
-    }
+    } catch (erro) {}
 
 };
 
@@ -194,9 +178,6 @@ export const deletePublicacao = async (req, res) => {
         // Retorna uma mensagem de sucesso
         return res.status(200).json({ mensagem: "Publicação deletado com sucesso" });
 
-    } catch (error) {
-        // Trata erros ao deletar a publicação
-        return res.status(500).json({ erro: "Erro ao deletar a publicação" });
-    }
+    } catch (error) {}
 
 };

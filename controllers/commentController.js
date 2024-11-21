@@ -32,7 +32,9 @@ export const createComentario = async (req, res) => {
 
         await publicacaoExiste.increment('qtd_comentarios');
 
-        return res.status(201).json(novoComentario);
+        return res.status(201).json({
+            id: novoComentario.id
+        });
 
     } catch (error) {
         return res.status(500).json({ erro: "Erro ao criar comentário" });
@@ -50,13 +52,22 @@ export const listPublicacaoComentario = async (req, res) => {
             return res.status(400).json({ erro: "Publicação não informada" });
         }
 
-        const comentariosFiltrados = await Comentario.findAll({
+        const comentarios = await Comentario.findAll({
             where: { publicacao_id },
         });
 
+        comentarios.map(comentario => ({
+            id: comentario.id,
+            comentario: comentario.comentario,
+            usuario_id: comentario.usuario_id,
+            nick: comentario.nick,
+            imagem: comentario.imagem,
+            criado_em: comentario.criado_em,
+        }));
+
         res.status(200).json({
-            data: comentariosFiltrados,
-            total: comentariosFiltrados.length,
+            data: comentarios,
+            total: data.length,
         });
 
     } catch (error) {
@@ -82,7 +93,7 @@ export const deleteComentario = async (req, res) => {
             return res.status(400).json({ erro: "Comentário não encontrado" });
         }
 
-        if (comentario.usuario_id !== usuario_id) {
+        if (cariomentario.usuo_id !== usuario_id) {
             return res.status(403).json({ erro: "Usuário não autorizado" });
         }
 

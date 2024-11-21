@@ -23,15 +23,14 @@ export const likePublicacao = async (req, res) => {
         await publicacaoExiste.increment('qtd_likes');
 
         // Busca a publicação atualizada para retornar o número de curtidas atualizado
-        const publicacaoAtualizada = await Publicacao.findByPk(publicacao_id);
+        await publicacaoExiste.save();
 
         // Retorna o número atualizado de curtidas
-        return res.status(200).json({ qtd_likes: publicacaoAtualizada.qtd_likes });
+        return res.status(200).json({
+            qtd_likes: publicacaoExiste.qtd_likes
+        });
 
-    } catch (error) {
-        // Trata qualquer erro no processo
-        return res.status(500).json({ erro: "Erro ao adicionar a curtida" });
-    }
+    } catch (error) {}
 
 };
 
@@ -57,15 +56,14 @@ export const likeComentario = async (req, res) => {
         await comentarioExiste.increment('qtd_likes');
 
         // Busca o comentário atualizado para retornar o número de curtidas atualizado
-        const comentarioAtualizado = await Comentario.findByPk(comentario_id);
+        await comentarioExiste.save();
 
         // Retorna o número atualizado de curtidas
-        return res.status(200).json({ qtd_likes: comentarioAtualizado.qtd_likes });
+        return res.status(200).json({
+            qtd_likes: comentarioExiste.qtd_likes
+        });
 
-    } catch (error) {
-        // Trata qualquer erro no processo
-        return res.status(500).json({ erro: "Erro ao adicionar a curtida" });
-    }
+    } catch (error) {}
 
 };
 
@@ -93,15 +91,14 @@ export const deslikeComentario = async (req, res) => {
         }
 
         // Busca o comentário atualizado para retornar o número de curtidas atualizado
-        const comentarioAtualizado = await Comentario.findByPk(comentario_id);
+        await comentarioExiste.save();
 
         // Retorna o número atualizado de curtidas
-        return res.status(200).json({ qtd_likes: comentarioAtualizado.qtd_likes });
+        return res.status(200).json({ 
+            qtd_likes: comentarioExiste.qtd_likes
+        });
 
-    } catch (error) {
-        // Trata qualquer erro no processo
-        return res.status(500).json({ erro: "Erro ao retirar a curtida" });
-    }
+    } catch (error) {}
 
 };
 
@@ -120,7 +117,7 @@ export const deslikePublicacao = async (req, res) => {
 
         // Verifica se o comentário foi encontrado
         if (!publicacaoExiste) {
-            return res.status(400).json({ erro: "Publicação não encontrado" });
+            return res.status(400).json({ erro: "Publicação não encontrada" });
         }
 
         // Se o número de curtidas for maior que zero, decrementa o número de curtidas
@@ -129,14 +126,13 @@ export const deslikePublicacao = async (req, res) => {
         }
 
         // Busca o comentário atualizado para retornar o número de curtidas atualizado
-        const publicacaoAtualizada = await Publicacao.findByPk(publicacao_id);
+        await publicacaoExiste.save();
 
         // Retorna o número atualizado de curtidas
-        return res.status(200).json({ qtd_likes: publicacaoAtualizada.qtd_likes });
+        return res.status(200).json({
+            qtd_likes: publicacaoAtualizada.qtd_likes
+        });
 
-    } catch (error) {
-        // Trata qualquer erro no processo
-        return res.status(500).json({ erro: "Erro ao retirar a curtida" });
-    }
+    } catch (error) {}
 
 };

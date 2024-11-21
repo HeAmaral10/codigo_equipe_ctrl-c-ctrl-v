@@ -1,14 +1,13 @@
 import Usuario from "../models/Usuarios.js"; // Modelo de Usuário
 import bcrypt from "bcrypt";
-import { Op } from "sequelize"; // Para buscas parciais (filtro)
-
-const MIN_AGE = 16;
 
 // Função para criar um novo usuário
 export const createUsuario = async (req, res) => {
+
     const { nome, email, senha, nascimento, nick, imagem } = req.body;
 
     try {
+
         // Verifica se todos os campos obrigatórios estão presentes
         if (!nome || !email || !senha || !nascimento || !nick || !imagem) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
@@ -16,7 +15,7 @@ export const createUsuario = async (req, res) => {
 
         // Verifica se o usuário tem mais de 16 anos
         const idade = new Date().getFullYear() - new Date(nascimento).getFullYear();
-        if (idade < MIN_AGE) {
+        if (idade < 16) {
             return res.status(400).json({ erro: "A idade deve ser maior que 16 anos" });
         }
 
@@ -41,7 +40,7 @@ export const createUsuario = async (req, res) => {
             senha: senhaCriptografada,
             nascimento,
             nick,
-            imagem: "https://link-para-imagem.png", // URL de imagem padrão
+            imagem: "sylveon.svg", // URL de imagem padrão
         });
 
         // Retorna o usuário criado
@@ -60,24 +59,10 @@ export const createUsuario = async (req, res) => {
 
 // Função para listar usuários com filtro por nome ou nick
 export const listUsuarios = async (req, res) => {
-    const { search } = req.query;
 
     try {
-        let where = {};
 
-        // Aplica o filtro de busca se o parâmetro for fornecido
-        if (search) {
-            where = {
-                [Op.or]: [
-                    { nome: { [Op.iLike]: `%${search}%` } }, // Busca parcial por nome
-                    { nick: { [Op.iLike]: `%${search}%` } }, // Busca parcial por nick
-                ],
-            };
-        }
-
-        const usuarios = await Usuario.findAll({
-            where,
-        });
+        const usuarios = await Usuario.findAll({});
 
         return res.status(200).json(
             usuarios.map(usuario => ({
@@ -112,9 +97,7 @@ export const detailUsuario = async (req, res) => {
             imagem: usuario.imagem,
             nascimento: usuario.nascimento,
         });
-    } catch (error) {
-        return res.status(500).json({ erro: "Erro ao buscar usuário" });
-    }
+    } catch (error) {}
 };
 
 // Função para atualizar um usuário
