@@ -1,6 +1,6 @@
-import express from "express";
+import express from "express"; // Framework (recursos prontos, utilizados e testados) para desenvolvimento web
 
-import {
+import { // Importa do arquivo publicacaoController.js
     createPublicacao,
     listAllPublicacao,
     listAllUsuario,
@@ -8,7 +8,8 @@ import {
     deletePublicacao,
 } from "../controllers/publicacaoController.js";
 
-const router = express.Router();
+// Cria um objeto de roteamento para definir rotas específicas, organizando de forma modular
+const router = express.Router(); 
 
 // Rota para criar uma nova publicação
 router.post("/publicacoes", createPublicacao);
@@ -25,4 +26,5 @@ router.get("/publicacoes/:publicacao_id", listOnePublicacao);
 // Rota para deletar uma publicação
 router.delete("/publicacoes", deletePublicacao);
 
-export default router;
+export default router; // Export para ter a possiblidade de importar em outro arquivo
+// Default para ser exportado como valor padrão de um módulo

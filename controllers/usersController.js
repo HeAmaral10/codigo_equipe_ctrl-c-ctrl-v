@@ -4,9 +4,10 @@ import bcrypt from "bcrypt";
 // Função para criar um novo usuário
 export const createUsuario = async (req, res) => {
 
-    const { nome, email, senha, nascimento, nick, imagem } = req.body;
 
     try {
+        const { nome, email, senha, nascimento, nick, imagem } = req.body;
+
 
         // Verifica se todos os campos obrigatórios estão presentes
         if (!nome || !email || !senha || !nascimento || !nick || !imagem) {
@@ -81,31 +82,40 @@ export const listUsuarios = async (req, res) => {
 
 // Função para obter detalhes de um usuário
 export const detailUsuario = async (req, res) => {
+
     const { usuario_id } = req.params;
 
     try {
+
         const usuario = await Usuario.findByPk(usuario_id);
 
+        console.log(usuario);
+        console.log(usuario_id);
         if (!usuario) {
             return res.status(404).json({ erro: "Usuário não encontrado" });
         }
 
+        const usuarioExiste  = await Usuario.findOne({
+            where: { usuario_id },
+        });
+
         return res.status(200).json({
-            nome: usuario.nome,
-            email: usuario.email,
-            nick: usuario.nick,
-            imagem: usuario.imagem,
-            nascimento: usuario.nascimento,
+            nome: usuarioExiste.nome,
+            email: usuarioExiste.email,
+            nick: usuarioExiste.nick,
+            imagem: usuarioExiste.imagem,
+            nascimento: usuarioExiste.nascimento,
         });
     } catch (error) {}
 };
 
 // Função para atualizar um usuário
 export const updateUsuarios = async (req, res) => {
-    const { usuario_id } = req.params;
-    const { nome, email, nick } = req.body;
 
     try {
+        const { usuario_id } = req.params.usuario_id;
+        const { nome, email, nick } = req.body;
+    
         const usuario = await Usuario.findByPk(usuario_id);
 
         if (!usuario) {
