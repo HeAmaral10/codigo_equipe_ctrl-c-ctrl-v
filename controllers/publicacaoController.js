@@ -4,7 +4,6 @@ import  Comentario  from "../models/Comentarios.js";
 
 export const createPublicacao = async (req, res) => {
 
-
     try {
         const { usuario_id, publicacao } = req.body;
 
@@ -77,7 +76,7 @@ export const listAllPublicacao = async (req, res) => {
 export const listAllUsuario = async (req, res) => {
 
     try {
-        const { usuario_id } = req.params;
+        const usuario_id = req.params.usuario_id;
 
         const usuario = await Usuario.findByPk(usuario_id);
         
@@ -106,7 +105,7 @@ export const listAllUsuario = async (req, res) => {
             include: [
                 {
                     model: Comentario,
-
+                    as: 'Comments'
                 },
             ]
         });
@@ -117,6 +116,8 @@ export const listAllUsuario = async (req, res) => {
             usuario_id: publicacao.usuario_id,
             nick: publicacao.Usuario.nick,
             imagem: publicacao.Usuario.imagem,
+            qtd_likes: publicacao.qtd_likes,
+            qtd_comentarios: publicacao.Comments.length,
             criado_em: publicacao.criado_em,
         }));
 
@@ -134,7 +135,7 @@ export const listAllUsuario = async (req, res) => {
 export const listOnePublicacao = async (req, res) => {
 
     try {
-        const { publicacao_id } = req.params;
+        const publicacao_id = req.params.publicacao_id;
 
         const publicacaoExiste = await Publicacao.findByPk(publicacao_id);
         
@@ -160,6 +161,7 @@ export const listOnePublicacao = async (req, res) => {
                 },
                 {
                     model: Comentario,
+                    as: 'Comments',
                     attributes: [
                         'comentario_id',
                         'comentario',

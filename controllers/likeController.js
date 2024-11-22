@@ -21,7 +21,7 @@ export const likePublicacao = async (req, res) => {
         }
 
         // Incrementa o número de curtidas da publicação
-        publicacao += qtd_likes;
+        publicacao.qtd_likes++;
 
         // Busca a publicação atualizada para retornar o número de curtidas atualizado
         await publicacao.save();

@@ -47,10 +47,6 @@ Comentarios.init( // Inicialização da classe modelo (define as colunas e propr
 );
 
 Comentarios.belongsTo(Usuarios, { foreignKey: "usuario_id" }); // Relacionamento com Usuarios
-// Define que Comentarios pertence ao modelo Usuarios através da coluna usuario_id- um comentário é sempre feito por alguém (com id)
-// Relacionamento belongsTo indica uma relação de "muitos para um" (muitos comentários pertencem a um usuário)
-// foreignKey: Especifica qual coluna no Comentarios referencia a chave primária do modelo Usuarios para se relacionarem
-Comentarios.belongsTo(Publicacoes, { foreignKey: "publicacao_id" }); 
 // Relacionamento com Publicações- muitos comentários contidos em uma publicação
 
 export default Comentarios; // Exporta o modelo Comentarios para ser usado em outros arquivos

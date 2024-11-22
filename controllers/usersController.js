@@ -6,11 +6,11 @@ export const createUsuario = async (req, res) => {
 
 
     try {
-        const { nome, email, senha, nascimento, nick, imagem } = req.body;
+        const { nome, email, senha, nascimento, nick } = req.body;
 
 
         // Verifica se todos os campos obrigatórios estão presentes
-        if (!nome || !email || !senha || !nascimento || !nick || !imagem) {
+        if (!nome || !email || !senha || !nascimento || !nick) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
 
@@ -41,7 +41,7 @@ export const createUsuario = async (req, res) => {
             senha: senhaCriptografada,
             nascimento,
             nick,
-            imagem: "sylveon.svg", // URL de imagem padrão
+            imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7mMNz8YCBvYmnr3BQUPX__YsC_WtDuAevwg&s", // URL de imagem padrão
         });
 
         // Retorna o usuário criado
@@ -83,7 +83,7 @@ export const listUsuarios = async (req, res) => {
 // Função para obter detalhes de um usuário
 export const detailUsuario = async (req, res) => {
 
-    const { usuario_id } = req.params;
+    const usuario_id = req.params.usuario_id;
 
     try {
 
@@ -95,16 +95,12 @@ export const detailUsuario = async (req, res) => {
             return res.status(404).json({ erro: "Usuário não encontrado" });
         }
 
-        const usuarioExiste  = await Usuario.findOne({
-            where: { usuario_id },
-        });
-
         return res.status(200).json({
-            nome: usuarioExiste.nome,
-            email: usuarioExiste.email,
-            nick: usuarioExiste.nick,
-            imagem: usuarioExiste.imagem,
-            nascimento: usuarioExiste.nascimento,
+            nome: usuario.nome,
+            email: usuario.email,
+            nick: usuario.nick,
+            imagem: usuario.imagem,
+            nascimento: usuario.nascimento,
         });
     } catch (error) {}
 };
@@ -113,7 +109,7 @@ export const detailUsuario = async (req, res) => {
 export const updateUsuarios = async (req, res) => {
 
     try {
-        const { usuario_id } = req.params.usuario_id;
+        const usuario_id = req.params.usuario_id;
         const { nome, email, nick } = req.body;
     
         const usuario = await Usuario.findByPk(usuario_id);
