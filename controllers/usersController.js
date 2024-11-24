@@ -4,12 +4,13 @@ import bcrypt from "bcrypt";
 // Função para criar um novo usuário
 export const createUsuario = async (req, res) => {
 
-    const { nome, email, senha, nascimento, nick, imagem } = req.body;
 
     try {
+        const { nome, email, senha, nascimento, nick } = req.body;
+
 
         // Verifica se todos os campos obrigatórios estão presentes
-        if (!nome || !email || !senha || !nascimento || !nick || !imagem) {
+        if (!nome || !email || !senha || !nascimento || !nick) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
 
@@ -40,7 +41,7 @@ export const createUsuario = async (req, res) => {
             senha: senhaCriptografada,
             nascimento,
             nick,
-            imagem: "sylveon.svg", // URL de imagem padrão
+            imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7mMNz8YCBvYmnr3BQUPX__YsC_WtDuAevwg&s", // URL de imagem padrão
         });
 
         // Retorna o usuário criado
@@ -81,9 +82,11 @@ export const listUsuarios = async (req, res) => {
 
 // Função para obter detalhes de um usuário
 export const detailUsuario = async (req, res) => {
-    const { usuario_id } = req.params;
 
     try {
+
+        const usuario_id = req.params.usuario_id;
+
         const usuario = await Usuario.findByPk(usuario_id);
 
         if (!usuario) {
@@ -102,10 +105,11 @@ export const detailUsuario = async (req, res) => {
 
 // Função para atualizar um usuário
 export const updateUsuarios = async (req, res) => {
-    const { usuario_id } = req.params;
-    const { nome, email, nick } = req.body;
 
     try {
+        const usuario_id = req.params.usuario_id;
+        const { nome, email, nick } = req.body;
+    
         const usuario = await Usuario.findByPk(usuario_id);
 
         if (!usuario) {
@@ -123,6 +127,7 @@ export const updateUsuarios = async (req, res) => {
             if (emailExiste) {
                 return res.status(400).json({ erro: "Email já está em uso" });
             }
+            usuario.email = email;
         }
 
         if (nick && nick !== usuario.nick) {
@@ -130,10 +135,15 @@ export const updateUsuarios = async (req, res) => {
             if (nickExiste) {
                 return res.status(400).json({ erro: "Nick já está em uso" });
             }
+            usuario.nick = nick;
         }
 
+        if (nome) usuario.nome = nome;
+
+        await usuario.save();
+
         // Atualiza os campos fornecidos
-        await usuario.update({ nome, email, nick });
+        //await usuario.update({ nome, email, nick });
 
         return res.status(200).json({
             id: usuario.id,

@@ -4,13 +4,13 @@ import  Comentario  from "../models/Comentarios.js";
 
 export const createPublicacao = async (req, res) => {
 
-    const { usuario_id, publicacao } = req.body;
-
-    const usuarioExiste = await Usuario.findByPk(usuario_id);
-
     try {
+        const { usuario_id, publicacao } = req.body;
+
+        const usuario = await Usuario.findByPk(usuario_id);
+    
         // Verifica se o usuário existe
-        if (!usuarioExiste) {
+        if (!usuario) {
             return res.status(400).json({ error: "Usuário não encontrado" });
         }
 
@@ -23,6 +23,7 @@ export const createPublicacao = async (req, res) => {
         const novaPublicacao = await Publicacao.create({
             publicacao,
             usuario_id,
+            criado_em: new Date(),
         });
 
         // Retorna a publicação criada
@@ -41,14 +42,21 @@ export const listAllPublicacao = async (req, res) => {
 
     try {
 
-        const publicacoes = await Publicacao.findAll({});
+        const publicacoes = await Publicacao.findAll({
+            include: [
+                {
+                    model: Usuario,
+                    attributes: ['nick', 'imagem']
+                },
+            ]
+        });
 
         publicacoes.map(publicacao => ({
             id: publicacao.id,
             publicacao: publicacao.publicacao,
             usuario_id: publicacao.usuario_id,
-            nick: publicacao.nick,
-            imagem: publicacao.imagem,
+            nick: publicacao.Usuario.nick,
+            imagem: publicacao.Usuario.imagem,
             qtd_likes: publicacao.qtd_likes,
             criado_em: publicacao.criado_em,
         }));
@@ -56,7 +64,7 @@ export const listAllPublicacao = async (req, res) => {
         // Retorna as publicações e o total
         return res.status(200).json({
             data: publicacoes,
-            total: data.length,
+            total: publicacoes.length,
         });
 
     } catch (error) {
@@ -67,14 +75,13 @@ export const listAllPublicacao = async (req, res) => {
 
 export const listAllUsuario = async (req, res) => {
 
-    const { usuario_id } = req.params;
-
-    const usuarioExiste = await Usuario.findByPk(usuario_id);
-
     try {
+        const usuario_id = req.params.usuario_id;
 
+        const usuario = await Usuario.findByPk(usuario_id);
+        
         // Verifica se o usuário existe
-        if (!usuarioExiste) {
+        if (!usuario) {
             return res.status(404).json({ erro: "Usuário não encontrado" });
         }
 
@@ -87,10 +94,33 @@ export const listAllUsuario = async (req, res) => {
                 'usuario_id',
                 'criado_em',
                 'qtd_likes',
-                'qtd_comentarios',
                 'criado_em'
             ],
+            include: [
+                {
+                    model: Usuario,
+                    attributes: ['nick', 'imagem']
+                },
+            ]
+            /*include: [
+                {
+                    model: Comentario,
+                    as: 'Comments'
+                },
+            ]*/
         });
+
+        publicacoes.map(publicacao => ({
+            id: publicacao.id,
+            comentario: publicacao.comentario,
+            usuario_id: publicacao.usuario_id,
+            nick: publicacao.Usuario.nick,
+            imagem: publicacao.Usuario.imagem,
+            qtd_likes: publicacao.qtd_likes,
+            //qtd_comentarios: publicacao.Comments.length,
+            criado_em: publicacao.criado_em,
+        }));
+
 
         // Retorna as publicações e o total
         return res.status(200).json({
@@ -104,12 +134,11 @@ export const listAllUsuario = async (req, res) => {
 
 export const listOnePublicacao = async (req, res) => {
 
-    const { publicacao_id } = req.params;
-
-    const publicacaoExiste = await Publicacao.findByPk(publicacao_id);
-
     try {
+        const publicacao_id = req.params.publicacao_id;
 
+        const publicacaoExiste = await Publicacao.findByPk(publicacao_id);
+        
         // Verifica se a publicação existe
         if (!publicacaoExiste) {
             return res.status(404).json({ erro: "Publicação não encontrada" });
@@ -132,6 +161,7 @@ export const listOnePublicacao = async (req, res) => {
                 },
                 {
                     model: Comentario,
+                    //as: 'Comments',
                     attributes: [
                         'comentario_id',
                         'comentario',
@@ -144,7 +174,7 @@ export const listOnePublicacao = async (req, res) => {
         });
         
         // Retorna a publicação e seus detalhes
-        return res.status(200).json(publicacao);
+        return res.status(200).json({publicacao});
 
     } catch (erro) {}
 
@@ -152,11 +182,12 @@ export const listOnePublicacao = async (req, res) => {
 
 export const deletePublicacao = async (req, res) => {
 
-    const { publicacao_id, usuario_id } = req.body;
-    
-    const publicacao = await Publicacao.findByPk(publicacao_id);
 
     try {
+        const { publicacao_id, usuario_id } = req.body;
+    
+        const publicacao = await Publicacao.findByPk(publicacao_id);
+    
         // Verifica se a publicação existe
         if (!publicacao) {
             return res.status(400).json({ erro: "Publicação não encontrada " });
@@ -176,7 +207,7 @@ export const deletePublicacao = async (req, res) => {
         await publicacao.destroy();
 
         // Retorna uma mensagem de sucesso
-        return res.status(200).json({ mensagem: "Publicação deletado com sucesso" });
+        return res.status(200).json({ mensagem: "Publicação deletada com sucesso" });
 
     } catch (error) {}
 

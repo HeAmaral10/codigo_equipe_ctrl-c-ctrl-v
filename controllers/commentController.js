@@ -5,22 +5,22 @@ import Comentario from "../models/Comentarios.js";
 // Função para criar um novo comentário
 export const createComentario = async (req, res) => {
 
-    const { publicacao_id, usuario_id, comentario } = req.body;
-
-    const usuarioExiste = await Usuario.findByPk(usuario_id);
-    const publicacaoExiste = await Publicacao.findByPk(publicacao_id);
-
     try {
+
+        const { publicacao_id, usuario_id, comentario } = req.body;
+
+        const usuario = await Usuario.findByPk(usuario_id);
+        const publicacao = await Publicacao.findByPk(publicacao_id);
 
         if (!publicacao_id || !usuario_id || !comentario) {
             return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
         }
 
-        if (!usuarioExiste) {
+        if (!usuario) {
             return res.status(400).json({ erro: "Usuário não encontrado" });
         }
 
-        if (!publicacaoExiste) {
+        if (!publicacao) {
             return res.status(400).json({ erro: "Publicação não encontrada" });
         }
 
@@ -28,9 +28,8 @@ export const createComentario = async (req, res) => {
             comentario,
             publicacao_id,
             usuario_id,
+            criado_em: new Date(),
         });
-
-        await publicacaoExiste.increment('qtd_comentarios');
 
         return res.status(201).json({
             id: novoComentario.id
@@ -44,9 +43,9 @@ export const createComentario = async (req, res) => {
 // Função para listar os comentários de uma publicação
 export const listPublicacaoComentario = async (req, res) => {
 
-    const { publicacao_id } = req.query;
-
     try {
+
+        const { publicacao_id } = req.query;
 
         if (!publicacao_id) {
             return res.status(400).json({ erro: "Publicação não informada" });
@@ -54,20 +53,26 @@ export const listPublicacaoComentario = async (req, res) => {
 
         const comentarios = await Comentario.findAll({
             where: { publicacao_id },
+            include: [
+                {
+                    model: Usuario,
+                    attributes: ['nick', 'imagem']
+                },
+            ]
         });
 
         comentarios.map(comentario => ({
             id: comentario.id,
             comentario: comentario.comentario,
             usuario_id: comentario.usuario_id,
-            nick: comentario.nick,
-            imagem: comentario.imagem,
+            nick: comentario.Usuario.nick,
+            imagem: comentario.Usuario.imagem,
             criado_em: comentario.criado_em,
         }));
 
         res.status(200).json({
             data: comentarios,
-            total: data.length,
+            total: comentarios.length,
         });
 
     } catch (error) {
@@ -78,14 +83,15 @@ export const listPublicacaoComentario = async (req, res) => {
 // Função para deletar um comentário
 export const deleteComentario = async (req, res) => {
     
-    const { comentario_id, usuario_id } = req.body;
-
-    const usuarioExiste = await Usuario.findByPk(usuario_id);
-    const comentario = await Comentario.findByPk(comentario_id);
-
     try {
+        const { comentario_id, usuario_id } = req.body;
 
-        if (!usuarioExiste) {
+        const usuario = await Usuario.findByPk(usuario_id);
+        const comentario = await Comentario.findByPk(comentario_id);
+    
+    
+
+        if (!usuario) {
             return res.status(400).json({ erro: "Usuário não encontrado" });
         }
 
@@ -93,15 +99,11 @@ export const deleteComentario = async (req, res) => {
             return res.status(400).json({ erro: "Comentário não encontrado" });
         }
 
-        if (cariomentario.usuo_id !== usuario_id) {
+        if (comentario.usuario_id !== usuario_id) {
             return res.status(403).json({ erro: "Usuário não autorizado" });
         }
 
         await comentario.destroy();
-
-        const publicacaoExiste = await Publicacao.findByPk(comentario.publicacao_id);
-
-        await publicacaoExiste.decrement('qtd_comentarios');
 
         return res.status(204).json({});
 
