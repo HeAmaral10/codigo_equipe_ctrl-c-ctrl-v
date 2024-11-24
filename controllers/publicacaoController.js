@@ -101,13 +101,13 @@ export const listAllUsuario = async (req, res) => {
                     model: Usuario,
                     attributes: ['nick', 'imagem']
                 },
-            ],
-            include: [
+            ]
+            /*include: [
                 {
                     model: Comentario,
                     as: 'Comments'
                 },
-            ]
+            ]*/
         });
 
         publicacoes.map(publicacao => ({
@@ -117,7 +117,7 @@ export const listAllUsuario = async (req, res) => {
             nick: publicacao.Usuario.nick,
             imagem: publicacao.Usuario.imagem,
             qtd_likes: publicacao.qtd_likes,
-            qtd_comentarios: publicacao.Comments.length,
+            //qtd_comentarios: publicacao.Comments.length,
             criado_em: publicacao.criado_em,
         }));
 
@@ -161,7 +161,7 @@ export const listOnePublicacao = async (req, res) => {
                 },
                 {
                     model: Comentario,
-                    as: 'Comments',
+                    //as: 'Comments',
                     attributes: [
                         'comentario_id',
                         'comentario',
@@ -174,7 +174,7 @@ export const listOnePublicacao = async (req, res) => {
         });
         
         // Retorna a publicação e seus detalhes
-        return res.status(200).json(publicacao);
+        return res.status(200).json({publicacao});
 
     } catch (erro) {}
 
@@ -207,7 +207,7 @@ export const deletePublicacao = async (req, res) => {
         await publicacao.destroy();
 
         // Retorna uma mensagem de sucesso
-        return res.status(200).json({ mensagem: "Publicação deletado com sucesso" });
+        return res.status(200).json({ mensagem: "Publicação deletada com sucesso" });
 
     } catch (error) {}
 

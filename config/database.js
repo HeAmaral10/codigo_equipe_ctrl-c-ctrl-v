@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 // Biblioteca que interage o node (backend) com o
 // banco de dados —> SERVIDOR (banco de dados) -
 // API (backend) - CLIENTE (frontend)
@@ -12,6 +13,26 @@ const sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "./banco.db" 
 });
+
+/*dotenv.config();
+
+const sequelize = new Sequelize(
+    process.env.DB_PROD_NAME,
+    process.env.DB_PROD_USER,
+    '4xL5gzL8I8zvd4gF',
+    {
+        host: process.env.DB_PROD_HOST,
+        port: process.env.DB_PROD_PORT,
+        dialect: process.env.DB_PROD_DIALECT,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false,
+            },
+        },
+        loggin: false,
+    }
+);*/
 
 // Função assíncrona para verificar o teste de conexão com o banco de dados foi feito corretamente
 const testConnection = async () => {

@@ -83,14 +83,12 @@ export const listUsuarios = async (req, res) => {
 // Função para obter detalhes de um usuário
 export const detailUsuario = async (req, res) => {
 
-    const usuario_id = req.params.usuario_id;
-
     try {
+
+        const usuario_id = req.params.usuario_id;
 
         const usuario = await Usuario.findByPk(usuario_id);
 
-        console.log(usuario);
-        console.log(usuario_id);
         if (!usuario) {
             return res.status(404).json({ erro: "Usuário não encontrado" });
         }
@@ -129,6 +127,7 @@ export const updateUsuarios = async (req, res) => {
             if (emailExiste) {
                 return res.status(400).json({ erro: "Email já está em uso" });
             }
+            usuario.email = email;
         }
 
         if (nick && nick !== usuario.nick) {
@@ -136,10 +135,15 @@ export const updateUsuarios = async (req, res) => {
             if (nickExiste) {
                 return res.status(400).json({ erro: "Nick já está em uso" });
             }
+            usuario.nick = nick;
         }
 
+        if (nome) usuario.nome = nome;
+
+        await usuario.save();
+
         // Atualiza os campos fornecidos
-        await usuario.update({ nome, email, nick });
+        //await usuario.update({ nome, email, nick });
 
         return res.status(200).json({
             id: usuario.id,

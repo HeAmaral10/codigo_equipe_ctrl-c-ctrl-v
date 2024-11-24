@@ -55,7 +55,7 @@ export const likeComentario = async (req, res) => {
         }
 
         // Incrementa o número de curtidas do comentário
-        comentario += qtd_likes;
+        comentario.qtd_likes++;
 
         // Busca o comentário atualizado para retornar o número de curtidas atualizado
         await comentario.save();
@@ -90,7 +90,7 @@ export const deslikeComentario = async (req, res) => {
 
         // Se o número de curtidas for maior que zero, decrementa o número de curtidas
         if (comentario.qtd_likes > 0) {
-            comentario += qtd_likes;
+            comentario.qtd_likes--;
         }
 
         // Busca o comentário atualizado para retornar o número de curtidas atualizado
@@ -112,7 +112,7 @@ export const deslikePublicacao = async (req, res) => {
         const { publicacao_id } = req.body;
 
         // Verifica se o comentário existe no banco de dados
-        const publicacao = await Publicacao.findByPk(Publicacao_id);
+        const publicacao = await Publicacao.findByPk(publicacao_id);
     
         // Valida se o campo `comentario_id` foi preenchido
         if (!publicacao_id) {
@@ -126,7 +126,7 @@ export const deslikePublicacao = async (req, res) => {
 
         // Se o número de curtidas for maior que zero, decrementa o número de curtidas
         if (publicacao.qtd_likes > 0) {
-            publicacao -= qtd_likes;
+            publicacao.qtd_likes--;
         }
 
         // Busca o comentário atualizado para retornar o número de curtidas atualizado
